@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "637462328156",
+    "project_id": "bicm-158bc",
+    "storage_bucket": "bicm-158bc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637462328156:android:c8682c302ed7765706c799",
+        "android_client_info": {
+          "package_name": "br.com.biexpert.bicm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637462328156-8fjhs12difk3kk5d4ha1oi10ec7ek6of.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoMGoEHe4RrFRU1awd17tFOaiTlpY8i4M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637462328156-8fjhs12difk3kk5d4ha1oi10ec7ek6of.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
