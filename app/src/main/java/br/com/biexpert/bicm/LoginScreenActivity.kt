@@ -6,18 +6,47 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
+import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import  com.google.firebase.auth.GoogleAuthProvider
 
 class LoginScreenActivity : AppCompatActivity() {
 
     //campos
-    lateinit var txtEmail : EditText
-    lateinit var txtPassword : EditText
+    lateinit var txtEmail: EditText
+    lateinit var txtPassword: EditText
+
+    lateinit var mGoogle: GoogleSignInClient
+    val Req_Code: Int = 123
+    private lateinit var firebaseAuth: FirebaseAuth
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_screen)
+
+
+        //region google e fb
+        var gso = GoogleSignInOptions.Builder(
+            GoogleSignInOptions.DEFAULT_SIGN_IN
+        )
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+
+
+        mGoogle = GoogleSignIn.getClient(this, gso);
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        //endregion
+
 
         //remove a actionbar
         supportActionBar?.hide()
@@ -26,22 +55,68 @@ class LoginScreenActivity : AppCompatActivity() {
         txtEmail = findViewById<EditText>(R.id.etEmail)
         txtPassword = findViewById<EditText>(R.id.etPassword)
 
-        findViewById<View>(R.id.registerView).setOnClickListener{
+        findViewById<View>(R.id.registerView).setOnClickListener {
             val activity = Intent(this, CreateAccountActivity::class.java);
             startActivity(activity);
         }
 
-        findViewById<View>(R.id.SigninGoogle).setOnClickListener {
-            Toast.makeText(this, "Entrar google", Toast.LENGTH_SHORT).show()
 
-
-
-
-        }
 
         findViewById<View>(R.id.btnEnter).setOnClickListener {
             Toast.makeText(this, "Entrando com login normal", Toast.LENGTH_SHORT).show()
         }
 
+        findViewById<View>(R.id.SigninGoogle).setOnClickListener {
+            // Toast.makeText(this, "Entrar google", Toast.LENGTH_SHORT).show()
+            signInGoogle()
+        }
+
     }
+
+    private fun signInGoogle() {
+        var signItent: Intent = mGoogle.signInIntent
+        startActivityForResult(signItent, Req_Code)
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == Req_Code) {
+            var result = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleResult(result);
+        }
+
+    }
+
+
+    private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
+
+        try {
+            var account: GoogleSignInAccount? = completedTask.getResult(ApiException::class.java)
+
+            if (account != null) {
+                UpdateUser(account)
+            }
+
+        } catch (e: ApiException) {
+            println(e)
+        }
+    }
+
+    private fun UpdateUser(account: GoogleSignInAccount) {
+        var credential = GoogleAuthProvider.getCredential(account.idToken, null)
+
+        firebaseAuth.signInWithCredential(credential).addOnCompleteListener(this) {
+            if (it.isSuccessful) {
+                var activity = Intent(this, MainActivity::class.java)
+                startActivity((activity))
+                finish()
+            }
+        }
+
+
+    }
+
+
 }

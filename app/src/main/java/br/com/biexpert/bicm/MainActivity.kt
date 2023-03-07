@@ -5,8 +5,37 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.content.Context
+import android.content.SharedPreferences
+import android.widget.EditText
+import android.widget.ListView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var sharedPreferences: SharedPreferences
+    private var gson = Gson()
+
+    private fun saveData(array: ArrayList<String>) {
+        var strJson = gson.toJson(array)
+        var editor = sharedPreferences.edit()
+        editor.putString("Lista", strJson)
+    }
+
+    private fun getData() : ArrayList<String>{
+        var arrayJson =sharedPreferences.getString("Lista", null);
+
+        return if(arrayJson.isNullOrEmpty()) {
+            arrayListOf()
+        }
+        else {
+            gson.fromJson(arrayJson, object :   TypeToken<ArrayList<String>>(){})
+        }
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //region setup
@@ -23,8 +52,8 @@ class MainActivity : AppCompatActivity() {
         //endregion
 
         //region listView
-        val listViewTasks = findViewById<android.widget.ListView>(R.id.listViewTasks);
-        val createTask = findViewById<android.widget.EditText>(R.id.createTask);
+        val listViewTasks = findViewById<ListView>(R.id.listViewTasks);
+        val createTask = findViewById<EditText>(R.id.createTask);
 
         val itemList = arrayListOf<String>();
         val adapter =
@@ -38,6 +67,7 @@ class MainActivity : AppCompatActivity() {
             //faz o refresh da tela
             adapter.notifyDataSetChanged()
             createTask.text.clear()
+            saveData(itemList)
 
         }
         //endregion
@@ -46,6 +76,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.clear).setOnClickListener {
             itemList.clear()
             adapter.notifyDataSetChanged()
+            saveData(itemList)
 
         }
         //endregion
@@ -53,7 +84,7 @@ class MainActivity : AppCompatActivity() {
 
         //region btnDeletar
 //        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
-        findViewById<View>(R.id.delete).setOnClickListener{
+        findViewById<View>(R.id.delete).setOnClickListener {
 
             val selectedItems = listViewTasks.checkedItemPositions
             for (i in selectedItems.size() - 1 downTo 0) {
@@ -63,12 +94,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             listViewTasks.clearChoices()
+            adapter.notifyDataSetChanged()
+            saveData(itemList)
 
 
         }
         //endregion
-
-
 
 
         //endregion
