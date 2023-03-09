@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.widget.EditText
 import android.widget.ListView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private var gson = Gson()
+
 
     private fun saveData(array: ArrayList<String>) {
         var strJson = gson.toJson(array)
@@ -42,11 +45,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+        sharedPreferences = getSharedPreferences("TodoList", Context.MODE_PRIVATE)
+
+
+
+        //se n tiver logado redireciona pro login
+        val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance();
+        val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
+        if(firebaseUser == null){
+            val intent = Intent(this, LoginScreenActivity::class.java);
+            startActivity(intent);
+        }
         //endregion
 
         //region btn sair
         findViewById<View>(R.id.logout).setOnClickListener {
             val activity = Intent(this, LoginScreenActivity::class.java);
+            FirebaseAuth.getInstance().signOut()
             startActivity(activity);
         }
         //endregion
@@ -55,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         val listViewTasks = findViewById<ListView>(R.id.listViewTasks);
         val createTask = findViewById<EditText>(R.id.createTask);
 
-        val itemList = arrayListOf<String>();
+        val itemList =  getData()//arrayListOf<String>();
         val adapter =
             ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, itemList);
 
@@ -78,12 +93,11 @@ class MainActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
             saveData(itemList)
 
+
         }
         //endregion
 
-
         //region btnDeletar
-//        listView.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
         findViewById<View>(R.id.delete).setOnClickListener {
 
             val selectedItems = listViewTasks.checkedItemPositions
@@ -100,7 +114,6 @@ class MainActivity : AppCompatActivity() {
 
         }
         //endregion
-
 
         //endregion
 

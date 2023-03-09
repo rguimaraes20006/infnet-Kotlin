@@ -14,6 +14,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import  com.google.firebase.auth.GoogleAuthProvider
 
 class LoginScreenActivity : AppCompatActivity() {
@@ -35,10 +36,7 @@ class LoginScreenActivity : AppCompatActivity() {
         //region google e fb
         var gso = GoogleSignInOptions.Builder(
             GoogleSignInOptions.DEFAULT_SIGN_IN
-        )
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
+        ).requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
 
 
         mGoogle = GoogleSignIn.getClient(this, gso);
@@ -63,7 +61,9 @@ class LoginScreenActivity : AppCompatActivity() {
 
 
         findViewById<View>(R.id.btnEnter).setOnClickListener {
-            Toast.makeText(this, "Entrando com login normal", Toast.LENGTH_SHORT).show()
+
+            loginFirebase()
+
         }
 
         findViewById<View>(R.id.SigninGoogle).setOnClickListener {
@@ -73,6 +73,7 @@ class LoginScreenActivity : AppCompatActivity() {
 
     }
 
+    //region GOOGLE
     private fun signInGoogle() {
         var signItent: Intent = mGoogle.signInIntent
         startActivityForResult(signItent, Req_Code)
@@ -88,7 +89,6 @@ class LoginScreenActivity : AppCompatActivity() {
         }
 
     }
-
 
     private fun handleResult(completedTask: Task<GoogleSignInAccount>) {
 
@@ -117,6 +117,50 @@ class LoginScreenActivity : AppCompatActivity() {
 
 
     }
+
+    //endregion
+
+
+    //region LoginFirebase
+    private fun loginFirebase() {
+
+        if (!txtEmail.text.toString().isNullOrEmpty() && !txtPassword.text.toString()
+                .isNullOrEmpty()
+        ) {
+
+            firebaseAuth.signInWithEmailAndPassword(
+                txtEmail.text.toString().trim(),
+                txtPassword.text.toString().trim()
+            )
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
+                        if (firebaseUser != null && firebaseUser.isEmailVerified()) {
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        } else if (firebaseUser != null && !firebaseUser.isEmailVerified) {
+                            firebaseAuth.signOut()
+                            Toast.makeText(
+                                this,
+                                getString(R.string.err_emailnverificado),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this,
+                                getString(R.string.err_generico),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        Toast.makeText(this, R.string.err_generico, Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } else {
+            Toast.makeText(this, R.string.err_campos_obrigatorios, Toast.LENGTH_SHORT).show()
+        }
+    }
+//endregion
 
 
 }

@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">bicm</string>
     <string name="adicionar">Adicionar</string>
+    <string name="err_campos_obrigatorios">Favor preencher os todos os campos</string>
+    <string name="err_senha_nao_confere">Senhas não conferem</string>
+    <string name="err_senha_mtocurta">Senha muito curta</string>
+    <string name="msg_create_account_sucess">Ative sua conta ao clicar no link que foi enviado por e-mail</string>
+    <string name="err_email_ja_cadastrado">Email já cadastrado.</string>
+    <string name="err_senha_fraca">Senha fraca.</string>
+    <string name="err_generico">Erro ao criar usuário.</string>
+    <string name="err_envioemail">Erro ao enviar o e-mail de validação de conta! procure o suporte</string>
+    <string name="err_emailnverificado">o e-mail ainda n foi verificado</string>
 </resources>
