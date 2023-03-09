@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "637462328156-8fjhs12difk3kk5d4ha1oi10ec7ek6of.apps.googleusercontent.com",
+          "client_id": "637462328156-7e1gth9ekq4t6nv6joimfkkqoc55ahn9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.biexpert.bicm",
+            "certificate_hash": "e0df4888f8d8dc2e8f3feb64b36255c1b4dd08d2"
+          }
+        },
+        {
+          "client_id": "637462328156-hb99jdrbgkf9ob0pd14kek28fgg5pk6i.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
