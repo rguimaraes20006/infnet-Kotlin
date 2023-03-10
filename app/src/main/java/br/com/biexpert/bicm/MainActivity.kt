@@ -9,8 +9,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserInfo
+import com.google.firebase.database.FirebaseDatabase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -19,22 +23,44 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var sharedPreferences: SharedPreferences
     private var gson = Gson()
-
-
+    private lateinit var fbUserID: String
+    private lateinit var itemList: ArrayList<String>
+    private lateinit var adapter: ArrayAdapter<String>
     private fun saveData(array: ArrayList<String>) {
-        var strJson = gson.toJson(array)
-        var editor = sharedPreferences.edit()
-        editor.putString("Lista", strJson)
+
+        val db = FirebaseDatabase.getInstance().getReference("tasks")
+        //  val task = TaskModel(fbUserID, array)
+
+        db.child(fbUserID).setValue(array).addOnSuccessListener {
+            Toast.makeText(this, "Salvo com sucesso", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener {
+            Toast.makeText(this, "Falhou", Toast.LENGTH_SHORT).show()
+            println(it.message)
+        }
+
     }
 
-    private fun getData() : ArrayList<String>{
-        var arrayJson =sharedPreferences.getString("Lista", null);
+    private fun getDataFromFirebase() {
 
-        return if(arrayJson.isNullOrEmpty()) {
-            arrayListOf()
-        }
-        else {
-            gson.fromJson(arrayJson, object :   TypeToken<ArrayList<String>>(){})
+        val db = FirebaseDatabase.getInstance().getReference("tasks")
+        db.child(fbUserID).get().addOnSuccessListener {
+
+            if (it.exists()) {
+
+                itemList = it.value as ArrayList<String>
+                adapter.notifyDataSetChanged()
+
+/*
+
+                itemList = gson.fromJson(
+                    it.value.toString(),
+                    object : TypeToken<ArrayList<String>>() {})
+*/
+
+
+            } else {
+                println("Não existe")
+            }
         }
 
     }
@@ -45,16 +71,20 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
-        sharedPreferences = getSharedPreferences("TodoList", Context.MODE_PRIVATE)
 
+
+        //sharedPreferences = getSharedPreferences("TodoList", Context.MODE_PRIVATE)
 
 
         //se n tiver logado redireciona pro login
         val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance();
         val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
-        if(firebaseUser == null){
+        if (firebaseUser == null) {
             val intent = Intent(this, LoginScreenActivity::class.java);
             startActivity(intent);
+        } else {
+            //val userId = FirebaseAuth.getInstance().currentUser?.uid
+            fbUserID = firebaseUser.uid
         }
         //endregion
 
@@ -66,23 +96,34 @@ class MainActivity : AppCompatActivity() {
         }
         //endregion
 
-        //region listView
-        val listViewTasks = findViewById<ListView>(R.id.listViewTasks);
-        val createTask = findViewById<EditText>(R.id.createTask);
 
-        val itemList =  getData()//arrayListOf<String>();
-        val adapter =
-            ArrayAdapter(this, android.R.layout.simple_list_item_multiple_choice, itemList);
+        //region listView
+        itemList = arrayListOf();
+
+
+
+        adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_multiple_choice,
+            itemList
+        );
+
+        val listViewTasks = findViewById<ListView>(R.id.listViewTasks);
+        listViewTasks.adapter = adapter;
+
+        getDataFromFirebase();
 
 
         //region btnAdd
+
+        val createTask = findViewById<EditText>(R.id.createTask);
         findViewById<View>(R.id.add).setOnClickListener {
             itemList.add(createTask.text.toString());
-            listViewTasks.adapter = adapter;
             //faz o refresh da tela
             adapter.notifyDataSetChanged()
             createTask.text.clear()
             saveData(itemList)
+
 
         }
         //endregion

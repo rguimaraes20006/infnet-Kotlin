@@ -146,14 +146,17 @@ class LoginScreenActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                         } else {
-                            Toast.makeText(
-                                this,
-                                getString(R.string.err_generico),
-                                Toast.LENGTH_SHORT
-                            ).show()
+
+
+                            Toast.makeText(this, task.exception?.message.toString() ,
+                                Toast.LENGTH_LONG ).show()
+
                         }
                     } else {
-                        Toast.makeText(this, R.string.err_generico, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, task.exception?.message.toString() ,
+                            Toast.LENGTH_LONG ).show()
+
+                      //  Toast.makeText(this, R.string.err_generico, Toast.LENGTH_SHORT).show()
                     }
                 }
         } else {
