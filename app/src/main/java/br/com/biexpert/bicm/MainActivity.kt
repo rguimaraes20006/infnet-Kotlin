@@ -38,6 +38,26 @@ class MainActivity : AppCompatActivity() {
             println(it.message)
         }
 
+/*
+        val arrayJson = sharedPreferences.getString("tasks", null);
+        return if(arrayJson.isNullOrEmpty()){
+            arrayListOf();
+        }else{
+            gson.fromJson(arrayJson, object: TypeToken<ArrayList<String>>(){}.type)
+        }*/
+
+    }
+
+
+    private fun getData() : ArrayList<String> {
+
+        val arrayJson = sharedPreferences.getString("tasks", null);
+
+        return if(arrayJson.isNullOrEmpty()){
+            arrayListOf();
+        }else{
+            gson.fromJson(arrayJson, object: TypeToken<ArrayList<String>>(){}.type)
+        }
     }
 
     private fun getDataFromFirebase() {
@@ -50,7 +70,8 @@ class MainActivity : AppCompatActivity() {
                 itemList = it.value as ArrayList<String>
                 adapter.notifyDataSetChanged()
 
-/*
+/* TROQUEI PARA O FIREBASE!!! FAvor considerar o FIrebase
+
 
                 itemList = gson.fromJson(
                     it.value.toString(),
