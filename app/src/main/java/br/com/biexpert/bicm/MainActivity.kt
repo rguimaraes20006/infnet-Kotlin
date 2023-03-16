@@ -49,14 +49,14 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getData() : ArrayList<String> {
+    private fun getData(): ArrayList<String> {
 
         val arrayJson = sharedPreferences.getString("tasks", null);
 
-        return if(arrayJson.isNullOrEmpty()){
+        return if (arrayJson.isNullOrEmpty()) {
             arrayListOf();
-        }else{
-            gson.fromJson(arrayJson, object: TypeToken<ArrayList<String>>(){}.type)
+        } else {
+            gson.fromJson(arrayJson, object : TypeToken<ArrayList<String>>() {}.type)
         }
     }
 
@@ -70,9 +70,7 @@ class MainActivity : AppCompatActivity() {
                 itemList = it.value as ArrayList<String>
                 adapter.notifyDataSetChanged()
 
-/* TROQUEI PARA O FIREBASE!!! FAvor considerar o FIrebase
-
-
+/* troquei o localstorage pelo o firebase, favor considerar o firebase
                 itemList = gson.fromJson(
                     it.value.toString(),
                     object : TypeToken<ArrayList<String>>() {})
@@ -93,9 +91,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
 
-
         //sharedPreferences = getSharedPreferences("TodoList", Context.MODE_PRIVATE)
-
 
         //se n tiver logado redireciona pro login
         val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance();
@@ -118,10 +114,26 @@ class MainActivity : AppCompatActivity() {
         //endregion
 
 
+        //region btnTranslate
+        findViewById<View>(R.id.btnTranslate).setOnClickListener {
+
+            val tradutor = AzureTranslator()
+            val createTask = findViewById<EditText>(R.id.createTask)
+
+            Thread {
+                val textoTraduzido = tradutor.translate(createTask.text.toString()).translations.first().text
+                runOnUiThread {
+                    createTask.setText(textoTraduzido.replace( "+",  " " ))
+                }
+
+            }.start()
+
+
+        }
+        //endregion
+
         //region listView
         itemList = arrayListOf();
-
-
 
         adapter = ArrayAdapter(
             this,
