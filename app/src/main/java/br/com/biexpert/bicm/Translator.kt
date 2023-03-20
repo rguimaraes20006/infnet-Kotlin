@@ -16,7 +16,7 @@ class AzureTranslator {
     private var gson = Gson()
 
     init {
-        chaveAzure = "82a5bc240ed449118155a8332098d8be"
+        chaveAzure = "******"
         endpointAzure =
             "https://api.cognitive.microsofttranslator.com/translate?api-version=3.0&from=pt&to=en"
         regiaoAzure = "eastus"
