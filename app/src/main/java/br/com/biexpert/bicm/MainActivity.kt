@@ -15,74 +15,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserInfo
 import com.google.firebase.database.FirebaseDatabase
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var sharedPreferences: SharedPreferences
-    private var gson = Gson()
     private lateinit var fbUserID: String
     private lateinit var itemList: ArrayList<String>
     private lateinit var adapter: ArrayAdapter<String>
-    private fun saveData(array: ArrayList<String>) {
-
-        val db = FirebaseDatabase.getInstance().getReference("tasks")
-        //  val task = TaskModel(fbUserID, array)
-
-        db.child(fbUserID).setValue(array).addOnSuccessListener {
-            Toast.makeText(this, "Salvo com sucesso", Toast.LENGTH_SHORT).show()
-        }.addOnFailureListener {
-            Toast.makeText(this, "Falhou", Toast.LENGTH_SHORT).show()
-            println(it.message)
-        }
-
-/*
-        val arrayJson = sharedPreferences.getString("tasks", null);
-        return if(arrayJson.isNullOrEmpty()){
-            arrayListOf();
-        }else{
-            gson.fromJson(arrayJson, object: TypeToken<ArrayList<String>>(){}.type)
-        }*/
-
-    }
-
-
-    private fun getData(): ArrayList<String> {
-
-        val arrayJson = sharedPreferences.getString("tasks", null);
-
-        return if (arrayJson.isNullOrEmpty()) {
-            arrayListOf();
-        } else {
-            gson.fromJson(arrayJson, object : TypeToken<ArrayList<String>>() {}.type)
-        }
-    }
-
-    private fun getDataFromFirebase() {
-
-        val db = FirebaseDatabase.getInstance().getReference("tasks")
-        db.child(fbUserID).get().addOnSuccessListener {
-
-            if (it.exists()) {
-
-                itemList = it.value as ArrayList<String>
-                adapter.notifyDataSetChanged()
-
-/* troquei o localstorage pelo o firebase, favor considerar o firebase
-                itemList = gson.fromJson(
-                    it.value.toString(),
-                    object : TypeToken<ArrayList<String>>() {})
-*/
-
-
-            } else {
-                println("Não existe")
-            }
-        }
-
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -193,4 +133,49 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+    private fun getDataFromFirebase() {
+
+        val db = FirebaseDatabase.getInstance().getReference("tasks")
+        db.child(fbUserID).get().addOnSuccessListener {
+
+            if (it.exists()) {
+
+                itemList = it.value as ArrayList<String>
+                adapter.notifyDataSetChanged()
+
+/* troquei o localstorage pelo o firebase, favor considerar o firebase
+                itemList = gson.fromJson(
+                    it.value.toString(),
+                    object : TypeToken<ArrayList<String>>() {})
+*/
+
+
+            } else {
+                println("Não existe")
+            }
+        }
+
+    }
+    private fun saveData(array: ArrayList<String>) {
+
+        val db = FirebaseDatabase.getInstance().getReference("tasks")
+        //  val task = TaskModel(fbUserID, array)
+
+        db.child(fbUserID).setValue(array).addOnSuccessListener {
+            Toast.makeText(this, "Salvo com sucesso", Toast.LENGTH_SHORT).show()
+        }.addOnFailureListener {
+            Toast.makeText(this, "Falhou", Toast.LENGTH_SHORT).show()
+            println(it.message)
+        }
+
+/*
+        val arrayJson = sharedPreferences.getString("tasks", null);
+        return if(arrayJson.isNullOrEmpty()){
+            arrayListOf();
+        }else{
+            gson.fromJson(arrayJson, object: TypeToken<ArrayList<String>>(){}.type)
+        }*/
+
+    }
+
 }
