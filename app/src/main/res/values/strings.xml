@@ -10,4 +10,6 @@
     <string name="err_generico">Erro ao criar usuário.</string>
     <string name="err_envioemail">Erro ao enviar o e-mail de validação de conta! procure o suporte</string>
     <string name="err_emailnverificado">o e-mail ainda n foi verificado</string>
+    <string name="CHAVE_AZURE">xxxxxx</string>
+    <string name="traduzir_azure">Traduzir (Azure)</string>
 </resources>

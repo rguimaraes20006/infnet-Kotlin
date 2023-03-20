@@ -1,4 +1,4 @@
-package br.com.biexpert.bicm
+package br.com.biexpert.bicm.dto
 
 
 
