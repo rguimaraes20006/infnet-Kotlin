@@ -12,4 +12,31 @@
     <string name="err_emailnverificado">o e-mail ainda n foi verificado</string>
     <string name="CHAVE_AZURE">xxxxxx</string>
     <string name="traduzir_azure">Traduzir (Azure)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="perfil">Perfil</string>
+    <string name="sem_senha">Sem senha</string>
+    <string name="senha">Senha</string>
+    <string name="weak">Weak</string>
+    <string name="moderate">Moderate</string>
+    <string name="strong">Strong</string>
+    <string name="veryweak">Very weak</string>
+    <string name="verystrong">Very strong</string>
+    <string name="ultramothefuckastrong">monstrona</string>
+    <string name="database_error">database_error</string>
+    <string name="task_updated_ok">Task update sucess</string>
+    <string name="title_activity_task">TaskActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="not">Não</string>
+    <string name="confirm_action">Confirm Action?</string>
+    <string name="task_delete_confirm_message">Deseja deletar a tarefa?</string>
+    <string name="yes">Sim</string>
+    <string name="Sucess">Sucesso!</string>
 </resources>

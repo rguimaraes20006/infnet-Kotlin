@@ -27,9 +27,9 @@ class CreateAccountActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
 
     lateinit var txtEmail: EditText
-    lateinit var txtPassword: EditText
+    lateinit var txtPassword: PasswordDificulty
     lateinit var txtPassword2: EditText
-    lateinit var createAccountInputArray: Array<EditText>
+    lateinit var createAccountInputArray: Array<Any>
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,7 +37,9 @@ class CreateAccountActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_account)
 
         txtEmail = findViewById(R.id.etEmail)
-        txtPassword = findViewById(R.id.etPassword)
+        txtPassword = supportFragmentManager.findFragmentById(R.id.etPassword) as PasswordDificulty
+
+
         txtPassword2 = findViewById(R.id.etConfirmPassword)
 
         //region GOOGLE
@@ -53,6 +55,7 @@ class CreateAccountActivity : AppCompatActivity() {
         //region Firebase
         FirebaseApp.initializeApp(this)
         firebaseAuth = FirebaseAuth.getInstance()
+
         createAccountInputArray = arrayOf(txtEmail, txtPassword, txtPassword2)
 
         findViewById<View>(R.id.btnCreateAccount).setOnClickListener {
@@ -113,7 +116,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
     //region Firebase
     private fun isValid(): Boolean {
-
+/*
         if (txtEmail.text.toString().trim().isNullOrEmpty() || txtPassword.text.toString().trim()
                 .isNullOrEmpty() || txtPassword2.text.toString().trim().isNullOrEmpty()
         ) {
@@ -127,7 +130,7 @@ class CreateAccountActivity : AppCompatActivity() {
         } else if (txtPassword.text.toString().length < 8) {
             Toast.makeText(this, getString(R.string.err_senha_mtocurta), Toast.LENGTH_SHORT).show()
             return false
-        }
+        }*/
         return true
     }
 

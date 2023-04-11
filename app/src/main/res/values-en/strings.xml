@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">bicm</string>
+    <string name="adicionar">Add</string>
+    <string name="err_campos_obrigatorios">Fill all fields </string>
+    <string name="err_senha_nao_confere">Passwords didnt match</string>
+    <string name="err_senha_mtocurta">password is to small</string>
+    <string name="msg_create_account_sucess">Activate your account in e-mail link</string>
+    <string name="err_email_ja_cadastrado">e-mail already in yse.</string>
+    <string name="err_senha_fraca">password is to weak.</string>
+    <string name="err_generico">error creating user.</string>
+    <string name="err_envioemail">somewhing was wrong</string>
+    <string name="err_emailnverificado">e-mail not verified yet</string>
+    <string name="traduzir_azure">tralsate (Azure)</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="perfil">Perfil</string>
+    <string name="sem_senha">Sem senha</string>
+    <string name="weak">Weak</string>
+    <string name="moderate">Moderate</string>
+    <string name="strong">Strong</string>
+    <string name="veryweak">Very weak</string>
+    <string name="verystrong">Very strong</string>
+    <string name="database_error">database_error</string>
+    <string name="task_updated_ok">Task update sucess</string>
+    <string name="not">Não</string>
+    <string name="confirm_action">Confirm Action?</string>
+    <string name="task_delete_confirm_message">Deseja deletar a tarefa?</string>
+    <string name="yes">Sim</string>
+    <string name="Sucess">Sucesso!</string>
+</resources>
