@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Create Task"
+            android:text="@string/create_task"
             android:textSize="24sp" />
 
         <EditText
@@ -24,14 +24,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:hint="Title" />
+            android:hint="@string/title" />
 
         <EditText
             android:id="@+id/descriptionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:hint="Description" />
+            android:hint="@string/description" />
 
         <EditText
             android:id="@+id/dateEditText"
@@ -45,28 +45,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:hint="Time" />
+            android:hint="@string/time" />
 
         <Button
             android:id="@+id/selectDateButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Select Date" />
+            android:text="@string/select_date" />
 
         <Button
             android:id="@+id/selectTimeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Select Time" />
+            android:text="@string/select_time" />
 
         <Button
             android:id="@+id/saveButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Save Task" />
+            android:text="@string/save_task" />
 
     </LinearLayout>
 

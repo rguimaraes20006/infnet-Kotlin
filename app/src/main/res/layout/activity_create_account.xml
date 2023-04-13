@@ -23,13 +23,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <fragment
+        android:id="@+id/etEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="E-mail*"
-        android:id="@+id/etEmail"
-        android:inputType="textEmailAddress"
         android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@id/etPassword"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,11 +36,9 @@
         app:layout_constraintVertical_chainStyle="packed"/>
 
 
-
-
     <fragment
         android:id="@+id/etPassword"
-        android:name="br.com.biexpert.bicm.PasswordDificulty"
+        android:name="br.com.biexpert.bicm.fragments.PasswordDificulty"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

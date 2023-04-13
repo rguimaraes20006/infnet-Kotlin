@@ -18,15 +18,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="Home">
+
             <ImageView
                 android:id="@+id/logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/outline_logout_24"
                 android:layout_gravity="right"
-                android:layout_marginEnd="16dp"/>
+                android:layout_marginEnd="16dp"
+                android:src="@drawable/outline_logout_24" />
         </androidx.appcompat.widget.Toolbar>
-
 
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -41,70 +41,81 @@
             android:id="@+id/txtTitulo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Todo List"
             android:gravity="center"
+            android:text="Todo List"
             android:textColor="@color/black"
-            android:textSize="26dp"/>
+            android:textSize="26dp" />
 
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:id="@+id/addContainer"
-            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@id/txtTitulo"
+            android:orientation="horizontal"
+            android:padding="10dp"
 
-        >
+            >
 
 
-
-
-    </LinearLayout>
+        </LinearLayout>
 
 
         <LinearLayout
+            android:id="@+id/linerLayoutButtonActions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/linerLayoutButtonActions"
-            android:orientation="horizontal"
             android:layout_below="@+id/addContainer"
+            android:orientation="horizontal"
             android:padding="10dp">
+
             <Button
                 android:id="@+id/add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Adicionar"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:text="Adicionar" />
 
-        <!--
-           <Button
-                android:id="@+id/delete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Deletar"
-                android:layout_weight="1" />
-            <Button
-                android:id="@+id/clear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Limpar"
-                android:layout_weight="1"/>
+            <!--
+               <Button
+                    android:id="@+id/delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Deletar"
+                    android:layout_weight="1" />
+                <Button
+                    android:id="@+id/clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Limpar"
+                    android:layout_weight="1"/>
 
-            -->
+                -->
 
         </LinearLayout>
 
         <TextView
             android:id="@+id/subtitleView"
-            android:text="My Tasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/linerLayoutButtonActions"
-            android:textSize="20dp"
-            android:textColor="@color/black"
+            android:gravity="center"
             android:padding="10dp"
-            android:gravity="center"/>
+            android:text="@string/my_tasks"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+
+
+        <fragment
+            android:id="@+id/taskListFragment"
+            android:name="br.com.biexpert.bicm.fragments.TaskList"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/subtitleView" />
+
+
+        <!--
 
         <ListView
             android:id="@+id/listViewTasks"
@@ -112,5 +123,8 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/subtitleView"
             />
+        -->
+
+
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

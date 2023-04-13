@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import br.com.biexpert.bicm.fragments.EmailValidator
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -20,7 +21,7 @@ import  com.google.firebase.auth.GoogleAuthProvider
 class LoginScreenActivity : AppCompatActivity() {
 
     //campos
-    lateinit var txtEmail: EditText
+    lateinit var txtEmail: EmailValidator
     lateinit var txtPassword: EditText
 
     lateinit var mGoogle: GoogleSignInClient
@@ -50,10 +51,13 @@ class LoginScreenActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
 
-        txtEmail = findViewById<EditText>(R.id.etEmail)
+        //txtEmail = findViewById<EditText>(R.id.etEmail)
+        txtEmail = supportFragmentManager.findFragmentById(R.id.etEmail) as EmailValidator
+
         txtPassword = findViewById<EditText>(R.id.etPassword)
 
         findViewById<View>(R.id.registerView).setOnClickListener {
+
             val activity = Intent(this, CreateAccountActivity::class.java);
             startActivity(activity);
         }
@@ -125,7 +129,7 @@ class LoginScreenActivity : AppCompatActivity() {
     private fun loginFirebase() {
 
         if (!txtEmail.text.toString().isNullOrEmpty() && !txtPassword.text.toString()
-                .isNullOrEmpty()
+                .isNullOrEmpty() && txtEmail.isValid
         ) {
 
             firebaseAuth.signInWithEmailAndPassword(

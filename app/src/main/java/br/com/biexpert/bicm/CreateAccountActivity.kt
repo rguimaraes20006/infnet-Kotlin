@@ -1,12 +1,13 @@
 package br.com.biexpert.bicm
 
 import android.content.Intent
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import br.com.biexpert.bicm.fragments.EmailValidator
+import br.com.biexpert.bicm.fragments.PasswordDificulty
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -18,7 +19,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.gson.Gson
 
 class CreateAccountActivity : AppCompatActivity() {
 
@@ -26,7 +26,7 @@ class CreateAccountActivity : AppCompatActivity() {
     val Req_Code: Int = 123
     private lateinit var firebaseAuth: FirebaseAuth
 
-    lateinit var txtEmail: EditText
+    lateinit var txtEmail: EmailValidator
     lateinit var txtPassword: PasswordDificulty
     lateinit var txtPassword2: EditText
     lateinit var createAccountInputArray: Array<Any>
@@ -36,7 +36,7 @@ class CreateAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
-        txtEmail = findViewById(R.id.etEmail)
+        txtEmail = supportFragmentManager.findFragmentById(R.id.etEmail) as EmailValidator
         txtPassword = supportFragmentManager.findFragmentById(R.id.etPassword) as PasswordDificulty
 
 
@@ -116,7 +116,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
     //region Firebase
     private fun isValid(): Boolean {
-/*
+
         if (txtEmail.text.toString().trim().isNullOrEmpty() || txtPassword.text.toString().trim()
                 .isNullOrEmpty() || txtPassword2.text.toString().trim().isNullOrEmpty()
         ) {
@@ -130,7 +130,11 @@ class CreateAccountActivity : AppCompatActivity() {
         } else if (txtPassword.text.toString().length < 8) {
             Toast.makeText(this, getString(R.string.err_senha_mtocurta), Toast.LENGTH_SHORT).show()
             return false
-        }*/
+        } else if (!txtEmail.isValid) {
+            Toast.makeText(this, getString(R.string.invalid_email), Toast.LENGTH_SHORT).show()
+            return false
+        }
+
         return true
     }
 
@@ -171,6 +175,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
 
     }
+
     private fun sendEmailVerification() {
         val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
 

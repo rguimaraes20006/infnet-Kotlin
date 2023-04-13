@@ -18,13 +18,13 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import androidx.appcompat.app.AlertDialog
+import br.com.biexpert.bicm.fragments.TaskList
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fbUserID: String
-    private lateinit var itemList: ArrayList<String>
-    private lateinit var adapter: ArrayAdapter<String>
+
     private lateinit var fbDatabase: DatabaseReference
 
 
@@ -82,59 +82,30 @@ class MainActivity : AppCompatActivity() {
         */
         //endregion
 
-        //region listView
-        itemList = ArrayList<String>()
-
-        adapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_list_item_multiple_choice,
-            itemList
-        );
-
-        val listViewTasks = findViewById<ListView>(R.id.listViewTasks);
-        listViewTasks.adapter = adapter;
-
-        //endregion
-
         //region realtime database
         fbDatabase.addValueEventListener(object : ValueEventListener {
 
             val ctx = this@MainActivity
+
+
             override fun onDataChange(snapshot: DataSnapshot) {
-                itemList.clear()
+
+
+                var itemList: ArrayList<String> = ArrayList()
+                var keyList: ArrayList<String> = ArrayList()
 
                 for (item in snapshot.children) {
                     itemList.add(item.child("title").value.toString())
-                }
-                adapter.notifyDataSetChanged()
+                    keyList.add(item.key.toString())
 
-                listViewTasks.setOnItemClickListener { parent, view, position, id ->
-                    val activity = Intent(ctx, TaskActivity::class.java)
-                    activity.putExtra("id", snapshot.children.toList()[position].key)
-                    startActivity(activity)
                 }
 
+                println(keyList)
 
-                listViewTasks.setOnItemLongClickListener { parent, view, position, id ->
-                    val itemId = snapshot.children.toList()[position].key
-
-                    if (itemId != null) {
-                        AlertDialog.Builder(ctx)
-                            .setTitle(getString(R.string.confirm_action))
-                            .setMessage(getString(R.string.task_delete_confirm_message))
-                            .setPositiveButton(getString(R.string.yes)) { dialog, which ->
-                                fbDatabase.child(itemId).removeValue()
-                                Toast.makeText(ctx, getString(R.string.Sucess), Toast.LENGTH_SHORT)
-                                    .show()
-                            }
-                            .setNegativeButton(getString(R.string.not)) { dialog, which ->
-                                dialog.dismiss()
-                            }
-                            .show()
-                    }
-
-                    true
-                }
+                //Refaz a bosta do fragmento
+                val fragment = TaskList.newInstance( keyList, itemList)
+                supportFragmentManager.beginTransaction().replace(R.id.taskListFragment, fragment)
+                    .commit()
 
 
             }//ondatachange
@@ -155,6 +126,7 @@ class MainActivity : AppCompatActivity() {
         //endregion
 
     }
-
-
+    fun RemoveTask(taskId : String) {
+        fbDatabase.child(taskId).removeValue()
+    }
 }

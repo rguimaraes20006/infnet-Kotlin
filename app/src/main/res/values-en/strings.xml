@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">bicm</string>
+    <string name="app_name">Task Manager</string>
     <string name="adicionar">Add</string>
     <string name="err_campos_obrigatorios">Fill all fields </string>
     <string name="err_senha_nao_confere">Passwords didnt match</string>
@@ -11,8 +11,6 @@
     <string name="err_envioemail">somewhing was wrong</string>
     <string name="err_emailnverificado">e-mail not verified yet</string>
     <string name="traduzir_azure">tralsate (Azure)</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="perfil">Perfil</string>
     <string name="sem_senha">Sem senha</string>
     <string name="weak">Weak</string>
@@ -27,4 +25,18 @@
     <string name="task_delete_confirm_message">Deseja deletar a tarefa?</string>
     <string name="yes">Sim</string>
     <string name="Sucess">Sucesso!</string>
+    <string name="create_task">Create Task</string>
+    <string name="description">Description</string>
+    <string name="title">Title</string>
+    <string name="time">Time</string>
+    <string name="select_date">Select Date</string>
+    <string name="save_task">Save Task</string>
+    <string name="senha">Password</string>
+    <string name="ultramothefuckastrong">Ultra mothefuka dificult</string>
+    <string name="title_activity_task">T</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="select_time">Select Time</string>
+    <string name="my_tasks">My Tasks</string>
+    <string name="invalid_email">Invalid Email</string>
 </resources>

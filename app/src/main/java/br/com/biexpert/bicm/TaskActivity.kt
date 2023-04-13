@@ -32,18 +32,26 @@ class TaskActivity : AppCompatActivity() {
     private lateinit var taskId: String
 
 
+    //controles
+    private lateinit var dateEditText: EditText
+    private lateinit var timeEditText: EditText
+    private lateinit var titleEditText: EditText
+    private lateinit var descriptionEditText: EditText
+    //endregion
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTaskBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
 
-        //region Controles
-        val dateEditText = findViewById<EditText>(R.id.dateEditText)
-        val timeEditText = findViewById<EditText>(R.id.timeEditText)
-        val titleEditText = findViewById<EditText>(R.id.titleEditText)
-        val descriptionEditText = findViewById<EditText>(R.id.descriptionEditText)
-        //endregion
+        dateEditText = findViewById<EditText>(R.id.dateEditText)
+        timeEditText = findViewById<EditText>(R.id.timeEditText)
+        titleEditText = findViewById<EditText>(R.id.titleEditText)
+        descriptionEditText = findViewById<EditText>(R.id.descriptionEditText)
+
+
+        val cal = Calendar.getInstance()
 
 
         //region Google Firebase Setup
@@ -66,25 +74,28 @@ class TaskActivity : AppCompatActivity() {
         //verifica se chegou um id da tarefa
         taskId = intent.getStringExtra("id") ?: ""
 
-        if (taskId.isNotEmpty()) getTask(taskId)
+        if (taskId.isNotEmpty()) {
+            getTask(taskId)
+        } else {
 
-        val cal = Calendar.getInstance()
+            dateEditText.setText(
+                String.format(
+                    "%02d/%02d/%04d",
+                    cal.get(Calendar.DAY_OF_MONTH),
+                    cal.get(Calendar.MONTH + 1),
+                    cal.get(Calendar.YEAR)
+                )
+            )
 
-        dateEditText.setText(
-            String.format(
-                "%02d/%02d/%04d",
-                cal.get(Calendar.DAY_OF_MONTH),
-                cal.get(Calendar.MONTH + 1),
-                cal.get(Calendar.YEAR)
+            timeEditText.setText(
+                String.format(
+                    "%02d:%02d",
+                    cal.get(Calendar.HOUR_OF_DAY),
+                    cal.get(Calendar.MINUTE)
+                )
             )
-        )
-        timeEditText.setText(
-            String.format(
-                "%02d:%02d",
-                cal.get(Calendar.HOUR_OF_DAY),
-                cal.get(Calendar.MINUTE)
-            )
-        )
+
+        }
 
         findViewById<Button>(R.id.selectDateButton).setOnClickListener {
             val datePickerDialog =
@@ -139,16 +150,16 @@ class TaskActivity : AppCompatActivity() {
 
     private fun getTask(Id: String) {
 
+
         val taskRef = FirebaseDatabase.getInstance().getReference("/users/$fbUserID/tasks/$Id")
 
         taskRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) return
-
-                findViewById<EditText>(R.id.titleEditText).setText(snapshot.child("title").value.toString())
-                findViewById<EditText>(R.id.descriptionEditText).setText(snapshot.child("description").value.toString())
-                findViewById<EditText>(R.id.dateEditText).setText(snapshot.child("date").value.toString())
-                findViewById<EditText>(androidx.core.R.id.time).setText(snapshot.child("time").value.toString())
+                titleEditText.setText(snapshot.child("title").value.toString())
+                descriptionEditText.setText(snapshot.child("description").value.toString())
+                dateEditText.setText(snapshot.child("date").value.toString())
+                timeEditText.setText(snapshot.child("time").value.toString())
             }
 
 
@@ -179,7 +190,7 @@ class TaskActivity : AppCompatActivity() {
         } else  //atualizar
         {
             val taskToUpdate =
-                FirebaseDatabase.getInstance().getReference("/users/$fbUserID/tasks/$task.id")
+                FirebaseDatabase.getInstance().getReference("/users/$fbUserID/tasks/${task.taskId}")
 
             taskToUpdate.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
