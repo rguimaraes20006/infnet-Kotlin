@@ -39,4 +39,6 @@
     <string name="select_time">Select Time</string>
     <string name="my_tasks">My Tasks</string>
     <string name="invalid_email">Invalid Email</string>
+    <string name="login">Log-in</string>
+    <string name="save">Save</string>
 </resources>
