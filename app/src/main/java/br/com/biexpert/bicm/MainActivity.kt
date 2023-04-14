@@ -67,12 +67,20 @@ class MainActivity : AppCompatActivity() {
         }
         //endregion
 
-        //region btn sair (faz logoff no firebase e volta para a tela de login)
+        //region btns top bar
         findViewById<View>(R.id.logout).setOnClickListener {
             val activity = Intent(this, LoginScreenActivity::class.java);
             FirebaseAuth.getInstance().signOut()
             startActivity(activity);
         }
+
+        findViewById<View>(R.id.profile).setOnClickListener{
+            val activity = Intent(this,  UserProfileActivity::class.java);
+            startActivity(activity)
+            finish()
+        }
+
+
         //endregion
 
 
@@ -81,29 +89,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().replace(R.id.taskListFragment, fragment)
             .commit()
 
-
-
-
-        //region btnTranslate (Traduz o texto da tarefa para ingles)
-        /*
-        findViewById<View>(R.id.btnTranslate).setOnClickListener {
-
-            val tradutor = AzureTranslator()
-            val createTask = findViewById<EditText>(R.id.createTask)
-
-            Thread {
-                val textoTraduzido =
-                    tradutor.translate(createTask.text.toString()).translations.first().text
-                runOnUiThread {
-                    createTask.setText(textoTraduzido.replace("+", " "))
-                }
-
-            }.start()
-
-
-        }
-        */
-        //endregion
 
         //region realtime database
         fbDatabase.addValueEventListener(object : ValueEventListener {
@@ -125,14 +110,6 @@ class MainActivity : AppCompatActivity() {
 
                 fragment.UpdateData(itemList, keyList)
 
-
-
-                //Refaz a bosta do fragmento
-                //val fragment = TaskList.newInstance( keyList, itemList)
-                //supportFragmentManager.beginTransaction().replace(R.id.taskListFragment, fragment)
-                 //   .commit()
-
-
             }//ondatachange
 
             override fun onCancelled(error: DatabaseError) {
@@ -148,6 +125,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(activity)
             finish()
         }
+
+
+
         //endregion
 
     }

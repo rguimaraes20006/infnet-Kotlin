@@ -42,4 +42,10 @@
     <string name="login">Log-in</string>
     <string name="save">Save</string>
     <string name="email_enviado_sucesso">Email foi enviado com sucesso</string>
+    <string name="perm_camera_msg">Para utilizar a funcionalidade é necessário utilizar a camera</string>
+    <string name="perm_gallery_msg">Permissão de galeria negada</string>
+    <string name="confirmar_senha">Confirmar Senha</string>
+    <string name="mudar_senha">Mudar Senha</string>
+    <string name="nome">Nome</string>
+    <string name="sobrenome">Sobrenome</string>
 </resources>
