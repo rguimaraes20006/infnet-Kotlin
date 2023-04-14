@@ -75,6 +75,15 @@ class LoginScreenActivity : AppCompatActivity() {
             signInGoogle()
         }
 
+        findViewById<View>(R.id.forgotPasswd).setOnClickListener {
+            val activity = Intent(this, ForgotPasswordActivity::class.java);
+            startActivity(activity);
+        }
+
+
+
+
+
     }
 
     //region GOOGLE

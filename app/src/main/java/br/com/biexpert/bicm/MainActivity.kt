@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var fbDatabase: DatabaseReference
 
+    private  lateinit var   fragment:  TaskList
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -60,6 +62,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(activity);
         }
         //endregion
+
+
+        //inicia a lista vazia
+        fragment = TaskList.newInstance( arrayListOf(), arrayListOf())
+        supportFragmentManager.beginTransaction().replace(R.id.taskListFragment, fragment)
+            .commit()
+
+
+
 
         //region btnTranslate (Traduz o texto da tarefa para ingles)
         /*
@@ -100,12 +111,14 @@ class MainActivity : AppCompatActivity() {
 
                 }
 
-                println(keyList)
+                fragment.UpdateData(itemList, keyList)
+
+                println(itemList)
 
                 //Refaz a bosta do fragmento
-                val fragment = TaskList.newInstance( keyList, itemList)
-                supportFragmentManager.beginTransaction().replace(R.id.taskListFragment, fragment)
-                    .commit()
+                //val fragment = TaskList.newInstance( keyList, itemList)
+                //supportFragmentManager.beginTransaction().replace(R.id.taskListFragment, fragment)
+                 //   .commit()
 
 
             }//ondatachange

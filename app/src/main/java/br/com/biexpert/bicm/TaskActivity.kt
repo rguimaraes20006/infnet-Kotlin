@@ -15,6 +15,8 @@ import android.widget.EditText
 import android.widget.Toast
 import br.com.biexpert.bicm.databinding.ActivityTaskBinding
 import br.com.biexpert.bicm.dto.TaskModel
+import br.com.biexpert.bicm.fragments.SaveButton
+import br.com.biexpert.bicm.fragments.TaskList
 
 
 import com.google.firebase.auth.FirebaseAuth
@@ -23,7 +25,7 @@ import com.google.firebase.database.*
 import java.util.*
 
 
-class TaskActivity : AppCompatActivity() {
+class TaskActivity : AppCompatActivity(), SaveButton.OnSaveClickListener {
 
 
     private lateinit var binding: ActivityTaskBinding;
@@ -130,26 +132,19 @@ class TaskActivity : AppCompatActivity() {
         }
 
 
-        //region botoes
-        findViewById<Button>(R.id.saveButton).setOnClickListener {
 
-            var taskToUpdate = TaskModel(
-                taskId,
-                titleEditText.text.toString(),
-                descriptionEditText.text.toString(),
-                dateEditText.text.toString(),
-                timeEditText.text.toString()
-            )
-            createOrUpdateTask(taskToUpdate)
+        val saveButtonFragment = SaveButton()
+        saveButtonFragment.setOnSaveClickListener(this)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.saveButtonFragment, saveButtonFragment)
+            .commit()
 
-        }
-        //endregion
+
 
     }
 
 
     private fun getTask(Id: String) {
-
 
         val taskRef = FirebaseDatabase.getInstance().getReference("/users/$fbUserID/tasks/$Id")
 
@@ -175,6 +170,20 @@ class TaskActivity : AppCompatActivity() {
 
     }
 
+    override fun onSaveClick() {
+
+        var taskToUpdate = TaskModel(
+            taskId,
+            titleEditText.text.toString(),
+            descriptionEditText.text.toString(),
+            dateEditText.text.toString(),
+            timeEditText.text.toString()
+        )
+        createOrUpdateTask(taskToUpdate)
+        finishAffinity()
+    }
+
+
     private fun createOrUpdateTask(task: TaskModel) {
 
         if (task.taskId.isNullOrEmpty()) //criar
@@ -182,10 +191,6 @@ class TaskActivity : AppCompatActivity() {
             val objRet = fbDatabase.push()
             objRet.setValue(task)
 
-            //retorna para a home
-            Intent(this, MainActivity::class.java).also {
-                startActivity(it)
-            }
 
         } else  //atualizar
         {
@@ -208,6 +213,7 @@ class TaskActivity : AppCompatActivity() {
                         getString(R.string.task_updated_ok),
                         Toast.LENGTH_SHORT
                     ).show()
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -222,6 +228,8 @@ class TaskActivity : AppCompatActivity() {
             });
 
         }
+
+        finishAffinity()
 
 
     }

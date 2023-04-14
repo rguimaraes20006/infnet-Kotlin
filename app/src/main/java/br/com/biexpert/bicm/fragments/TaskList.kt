@@ -1,6 +1,7 @@
 package br.com.biexpert.bicm.fragments
 
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -21,18 +22,32 @@ class TaskList : Fragment() {
 
     private var itemList: ArrayList<String>? = null
     private var keyList: ArrayList<String>? = null
-
-
     private lateinit var adapter: ArrayAdapter<String>
-
+    private lateinit var listViewTasks: ListView
+    private lateinit var ctx: Context
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             itemList = it.getStringArrayList(ARG_ARRAY_LIST) as ArrayList<String>
             keyList = it.getStringArrayList(ARG_KEY_LIST) as ArrayList<String>
-
         }
+    }
+
+    fun UpdateData(_itemList: ArrayList<String>, _keyList: ArrayList<String>) {
+
+        itemList = _itemList
+        keyList = _keyList
+
+        adapter = ArrayAdapter(
+            ctx,
+            android.R.layout.simple_list_item_multiple_choice,
+            itemList!!
+        );
+
+        listViewTasks.adapter = adapter;
+        adapter.notifyDataSetChanged()
+
     }
 
     override fun onCreateView(
@@ -40,28 +55,20 @@ class TaskList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_task_list, container, false)
+
+
 
         if (itemList === null) {
             println("itemlist vazio! sem dados")
             return view
         }
 
-        adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_list_item_multiple_choice,
-            itemList!!
-        );
-
-        val listViewTasks = view.findViewById(R.id.listViewTasks) as ListView;
-        listViewTasks.adapter = adapter;
-
-        adapter.notifyDataSetChanged()
+        listViewTasks = view.findViewById(R.id.listViewTasks) as ListView;
 
 
-        var ctx = this.context
+         ctx = this.context!!
         listViewTasks.setOnItemClickListener { parent, view, position, id ->
             val activity = Intent(ctx, TaskActivity::class.java)
 

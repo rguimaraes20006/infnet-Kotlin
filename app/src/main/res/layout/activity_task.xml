@@ -61,12 +61,15 @@
             android:layout_margin="16dp"
             android:text="@string/select_time" />
 
-        <Button
-            android:id="@+id/saveButton"
+        <fragment
+            android:id="@+id/saveButtonFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="@string/save_task" />
+            android:name="br.com.biexpert.bicm.fragments.SaveButton"
+           />
+
+
 
     </LinearLayout>
 
