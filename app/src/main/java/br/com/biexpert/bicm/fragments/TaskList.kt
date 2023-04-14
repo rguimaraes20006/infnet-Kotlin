@@ -69,26 +69,26 @@ class TaskList : Fragment() {
 
 
          ctx = this.context!!
-        listViewTasks.setOnItemClickListener { parent, view, position, id ->
+        listViewTasks.setOnItemClickListener { _, _, position, _ ->
             val activity = Intent(ctx, TaskActivity::class.java)
 
             activity.putExtra("id", keyList?.get(position))
             startActivity(activity)
         }
 
-        listViewTasks.setOnItemLongClickListener { parent, view, position, id ->
+        listViewTasks.setOnItemLongClickListener { _, _, position, _ ->
             val itemId = keyList?.get(position)
 
             if (itemId != null) {
                 AlertDialog.Builder(ctx!!)
                     .setTitle(getString(R.string.confirm_action))
                     .setMessage(getString(R.string.task_delete_confirm_message))
-                    .setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                    .setPositiveButton(getString(R.string.yes)) { _, _ ->
                         (activity as MainActivity?)!!.RemoveTask(itemId)
                         Toast.makeText(ctx, getString(R.string.Sucess), Toast.LENGTH_SHORT)
                             .show()
                     }
-                    .setNegativeButton(getString(R.string.not)) { dialog, which ->
+                    .setNegativeButton(getString(R.string.not)) { dialog, _ ->
                         dialog.dismiss()
                     }
                     .show()
