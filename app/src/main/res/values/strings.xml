@@ -22,7 +22,7 @@
     <string name="verystrong">Very strong</string>
     <string name="ultramothefuckastrong">monstrona</string>
     <string name="database_error">database_error</string>
-    <string name="task_updated_ok">Task update sucess</string>
+    <string name="task_updated_ok">Tarefa Atualizada com  sucesso</string>
     <string name="title_activity_task">TaskActivity</string>
 
     <string name="next">Próx</string>
@@ -32,11 +32,11 @@
     <string name="task_delete_confirm_message">Deseja deletar a tarefa?</string>
     <string name="yes">Sim</string>
     <string name="Sucess">Sucesso!</string>
-    <string name="create_task">Create Task</string>
+    <string name="create_task">Criar Task</string>
     <string name="description">Description</string>
     <string name="title">Title</string>
     <string name="time">Time</string>
-    <string name="select_date">Select Date</string>
+    <string name="select_date">Selecionar Data</string>
     <string name="select_time">Selecionar hora</string>
     <string name="save_task">Salvar tarefa</string>
     <string name="my_tasks">Minhas tarefas</string>
@@ -50,8 +50,19 @@
     <string name="mudar_senha">Mudar Senha</string>
     <string name="nome">Nome</string>
     <string name="sobrenome">Sobrenome</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="notificacao_criada">Notificação Criada com sucesso!</string>
     <string name="notificacao_agendada">Notificação agendada</string>
+
+
+
+
+    <string name="admob_app_id">G-AMS23213901290519FS02390FD32</string>
+
+
+
+
+
+
+
+
 </resources>
