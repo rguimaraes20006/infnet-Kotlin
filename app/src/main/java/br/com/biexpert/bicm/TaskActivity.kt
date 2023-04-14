@@ -17,6 +17,7 @@ import br.com.biexpert.bicm.databinding.ActivityTaskBinding
 import br.com.biexpert.bicm.dto.TaskModel
 import br.com.biexpert.bicm.fragments.SaveButton
 import br.com.biexpert.bicm.fragments.TaskList
+import br.com.biexpert.bicm.service.NotificationReceiver
 
 
 import com.google.firebase.auth.FirebaseAuth
@@ -55,7 +56,6 @@ class TaskActivity : AppCompatActivity(), SaveButton.OnSaveClickListener {
 
         val cal = Calendar.getInstance()
 
-
         //region Google Firebase Setup
         val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance();
         val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
@@ -79,7 +79,6 @@ class TaskActivity : AppCompatActivity(), SaveButton.OnSaveClickListener {
         if (taskId.isNotEmpty()) {
             getTask(taskId)
         } else {
-
             dateEditText.setText(
                 String.format(
                     "%02d/%02d/%04d",
@@ -98,6 +97,9 @@ class TaskActivity : AppCompatActivity(), SaveButton.OnSaveClickListener {
             )
 
         }
+
+
+
 
         findViewById<Button>(R.id.selectDateButton).setOnClickListener {
             val datePickerDialog =
@@ -131,14 +133,11 @@ class TaskActivity : AppCompatActivity(), SaveButton.OnSaveClickListener {
             timePickerDialog.show()
         }
 
-
-
         val saveButtonFragment = SaveButton()
         saveButtonFragment.setOnSaveClickListener(this)
         supportFragmentManager.beginTransaction()
             .replace(R.id.saveButtonFragment, saveButtonFragment)
             .commit()
-
 
 
     }
@@ -179,10 +178,17 @@ class TaskActivity : AppCompatActivity(), SaveButton.OnSaveClickListener {
             dateEditText.text.toString(),
             timeEditText.text.toString()
         )
+
+        scheduleNotification(
+            taskToUpdate.date,
+            taskToUpdate.time,
+            taskToUpdate.title,
+            taskToUpdate.description
+        )
         createOrUpdateTask(taskToUpdate)
+
         finishAffinity()
     }
-
 
     private fun createOrUpdateTask(task: TaskModel) {
 
@@ -232,6 +238,48 @@ class TaskActivity : AppCompatActivity(), SaveButton.OnSaveClickListener {
         finishAffinity()
 
 
+    }
+
+    private fun scheduleNotification(data: String, hora: String, title: String, message: String) {
+        val intent = Intent(this, NotificationReceiver::class.java)
+
+        intent.putExtra("title", title)
+        intent.putExtra("message", message)
+
+
+        val pendingIntent = PendingIntent.getBroadcast(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val calendar = Calendar.getInstance()
+        val data_dia = data.substring(0, 2).toInt()
+        val data_mes = data.substring(3, 5).toInt() - 1
+        val data_ano = data.substring(6, 10).toInt()
+        val hora_hora = hora.substring(0, 2).toInt()
+        val hora_minuto = hora.substring(3, 5).toInt()
+
+        calendar.set(
+            data_ano,
+            data_mes,
+            data_dia,
+            hora_hora,
+            hora_minuto,
+            0
+        )
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                calendar.timeInMillis,
+                pendingIntent
+            )
+        } else {
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, pendingIntent)
+        }
+        Toast.makeText(this, getString(R.string.notificacao_agendada), Toast.LENGTH_SHORT).show()
     }
 
 

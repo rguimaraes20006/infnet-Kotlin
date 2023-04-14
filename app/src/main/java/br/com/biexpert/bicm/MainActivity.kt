@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import androidx.appcompat.app.AlertDialog
 import br.com.biexpert.bicm.fragments.TaskList
+import br.com.biexpert.bicm.fragments.WetherFragment
 import com.google.firebase.analytics.FirebaseAnalytics
 
 
@@ -129,6 +130,12 @@ class MainActivity : AppCompatActivity() {
 
 
         //endregion
+
+
+
+        //previsão do tempo
+        supportFragmentManager.beginTransaction().replace(R.id.weather_fragment_container, WetherFragment()).commit()
+
 
     }
     fun RemoveTask(taskId : String) {

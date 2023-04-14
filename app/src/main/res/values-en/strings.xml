@@ -48,4 +48,6 @@
     <string name="mudar_senha">Mudar Senha</string>
     <string name="nome">Nome</string>
     <string name="sobrenome">Sobrenome</string>
+    <string name="notificacao_criada">Notificação Criada com sucesso!</string>
+    <string name="notificacao_agendada">Notificação agendada</string>
 </resources>
