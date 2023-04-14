@@ -14,6 +14,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseApp
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import  com.google.firebase.auth.GoogleAuthProvider
@@ -27,11 +28,16 @@ class LoginScreenActivity : AppCompatActivity() {
     lateinit var mGoogle: GoogleSignInClient
     val Req_Code: Int = 123
     private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseAnalytics: FirebaseAnalytics;
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login_screen)
+
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
 
         //region google e fb
@@ -65,9 +71,7 @@ class LoginScreenActivity : AppCompatActivity() {
 
 
         findViewById<View>(R.id.btnEnter).setOnClickListener {
-
             loginFirebase()
-
         }
 
         findViewById<View>(R.id.SigninGoogle).setOnClickListener {
@@ -79,11 +83,6 @@ class LoginScreenActivity : AppCompatActivity() {
             val activity = Intent(this, ForgotPasswordActivity::class.java);
             startActivity(activity);
         }
-
-
-
-
-
     }
 
     //region GOOGLE
@@ -124,7 +123,15 @@ class LoginScreenActivity : AppCompatActivity() {
             if (it.isSuccessful) {
                 var activity = Intent(this, MainActivity::class.java)
                 startActivity((activity))
+
+                //loga o acesso
+                val bundle = Bundle()
+                bundle.putString(FirebaseAnalytics.Param.ITEM_ID,  FirebaseAuth.getInstance().currentUser?.uid  )
+                bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Login_Google")
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
                 finish()
+
             }
         }
 
@@ -149,6 +156,14 @@ class LoginScreenActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val firebaseUser: FirebaseUser? = firebaseAuth.currentUser
                         if (firebaseUser != null && firebaseUser.isEmailVerified()) {
+
+                            //loga o acesso
+                            val bundle = Bundle()
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_ID,  FirebaseAuth.getInstance().currentUser?.uid  )
+                            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Login_Usuario_E_Senha")
+                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
+
                             startActivity(Intent(this, MainActivity::class.java))
                             finish()
                         } else if (firebaseUser != null && !firebaseUser.isEmailVerified) {
@@ -160,10 +175,8 @@ class LoginScreenActivity : AppCompatActivity() {
                             ).show()
                         } else {
 
-
                             Toast.makeText(this, task.exception?.message.toString() ,
                                 Toast.LENGTH_LONG ).show()
-
                         }
                     } else {
                         Toast.makeText(this, task.exception?.message.toString() ,

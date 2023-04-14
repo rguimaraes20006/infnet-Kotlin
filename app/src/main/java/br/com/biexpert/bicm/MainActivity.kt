@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import androidx.appcompat.app.AlertDialog
 import br.com.biexpert.bicm.fragments.TaskList
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,13 +30,16 @@ class MainActivity : AppCompatActivity() {
 
     private  lateinit var   fragment:  TaskList
 
+    private lateinit var firebaseAnalytics: FirebaseAnalytics;
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportActionBar?.hide()
+
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
+
 
         //region Google Firebase Setup
         //se n estiver logado redireciona pro login
@@ -51,6 +55,14 @@ class MainActivity : AppCompatActivity() {
 
             //seta a referencia do banco
             fbDatabase = FirebaseDatabase.getInstance().getReference("/users/$fbUserID/tasks")
+
+
+            //loga o acesso
+            val bundle = Bundle()
+            bundle.putString(FirebaseAnalytics.Param.ITEM_ID,  firebaseUser.uid )
+            bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Acesso_Home")
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
 
         }
         //endregion
@@ -113,7 +125,7 @@ class MainActivity : AppCompatActivity() {
 
                 fragment.UpdateData(itemList, keyList)
 
-                println(itemList)
+
 
                 //Refaz a bosta do fragmento
                 //val fragment = TaskList.newInstance( keyList, itemList)
@@ -141,5 +153,16 @@ class MainActivity : AppCompatActivity() {
     }
     fun RemoveTask(taskId : String) {
         fbDatabase.child(taskId).removeValue()
+
+
+        //loga a ação
+        val bundle = Bundle()
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID,  fbUserID )
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "Task_Excluida")
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle)
+
+
+
+
     }
 }
